@@ -130,8 +130,6 @@ The techniques necessary for such an exploration are now generally available. Li
 
 Concepts may be matched to relevant additional information by querying a graph of information in the Resource Description Framework (RDF) data model\cite{cyganiak2014rdf}. Such information form ``knowledge graphs" of related information. The first general purpose knowledge graph of scale was Freebase\cite{bollacker2008freebase}, which became the basis for the Google Knowledge Graph\cite{singhalintroducing}. Web search engines such as Google, Bing, and Yandex now use knowledge graphs to provide summaries of relevant information related to search terms. It is exactly this functionality that we wanted to add to our general purpose hypertext editors.
 
-TODO: REFERENCES: \cite{ferrucci2010building}.
-
 \section{Architecture}
 
 \begin{figure*}
@@ -142,9 +140,9 @@ TODO: REFERENCES: \cite{ferrucci2010building}.
 %\vskip -6pt
 \end{figure*}
 
-We wrapped one of our JavaScript hypertext editors, Textbox.io, to include a sidebar for the presentation of supplemental material. The sidebar is a simple HTML component that accepts HTML fragments for display and possible drag-and-drop of components into the editor?s content pane. JavaScript is used to query on online service to search for relevant information based upon the current contents of the editor.
+We wrapped one of our JavaScript hypertext editors, Textbox.io, to include a sidebar for the presentation of supplemental material. The sidebar is a simple HTML component that accepts HTML fragments for display and possible drag-and-drop of components into the editor's content pane. JavaScript is used to query on online service to search for relevant information based upon the current contents of the editor.
 
-Textual content is written into the editor by a document author. That content is uploaded to an Ephox cloud service for analysis (Figure 1). The Ephox service sends the content to another service to parse the content, and extract concepts. We used IBM?s online AlchemyLanguage service\footnote{\texttt{http://www.alchemyapi.com/products/alchemylanguage/}} for linguistic parsing and concept identification, although any number of similar services could have been used for those purposes. One advantage of the AlchemyLanguage API is that its concept tagging service\footnote{\texttt{http://www.alchemyapi.com/products/alchemylanguage/\allowbreak{}concept-tagging}} returns DBpedia\cite{auer2007dbpedia} URIs for each identified concept.
+Textual content is written into the editor by a document author. That content is uploaded to an Ephox cloud service for analysis (Figure 1). The Ephox service sends the content to another service to parse the content, and extract concepts. We used IBM's online AlchemyLanguage service\footnote{\texttt{http://www.alchemyapi.com/products/alchemylanguage/}} for linguistic parsing and concept identification, although any number of similar services could have been used for those purposes. AlchemyLanguage is based upon IBM's Watson question-answering AI system\cite{ferrucci2010building}. One advantage of the AlchemyLanguage API is that its concept tagging service\footnote{\texttt{http://www.alchemyapi.com/products/alchemylanguage/\allowbreak{}concept-tagging}} returns DBpedia\cite{auer2007dbpedia} URIs for each identified concept.
 
 DBpedia URIs conveniently serve as indexes into an RDF knowledge graph. To implement the knowledge graph service, we used an Apache Tomcat\footnote{\texttt{https://tomcat.apache.org/}} Web application server with a RDF4J\footnote{\texttt{http://rdf4j.org/}} version 2.0 RDF database engine. Relevant portions of DBpedia were sharded into six RDF4J databases to speed both data indexing and assist query performance. DBpedia topical concepts, SKOS\cite{miles2009skos} categories, labels, image URLs, short abstracts, categories and their labels, transitive instance types, mapping-based objects and literals, and person data were used for our initial experiments. We limited our DBpedia extracts to the English language due to the language limitations of the AlchemyLanguage concept tagging service.
 
@@ -155,9 +153,9 @@ Two SPARQL 1.1\cite{harris2013sparql} queries against the knowledge graph were u
 \item The second SPARQL query is used to identify available data about a specific concept, as anticipated by its type.
 \end{itemize}
 
-Thus, a concept of type ?person? might have a birth date and a birth place. A place might have area and a population estimate, etc. Most data elements for any given type are considered to be optional.
+Thus, a concept of type ``person" might have a birth date and a birth place. A place might have area and a population estimate, etc. Most data elements for any given type are considered to be optional.
 
-The results of the second query are used to fill a type-specific HTML template. An HTML fragment is produced for each concept, and any empty divs are removed. The completed fragment is returned to the editor?s sidebar for display.
+The results of the second query are used to fill a type-specific HTML template. An HTML fragment is produced for each concept, and any empty divs are removed. The completed fragment is returned to the editor's sidebar for display.
 
 SPARQL 1.1 SERVICE clauses were used to execute federated queries\cite{prud2013sparql} across the various databases making up the knowledge graph.
 
@@ -174,9 +172,9 @@ We chose to construct our own knowledge graph instead of using one provided by t
 \textbf{TODO:} Anna to conduct user testing to determine an objective basis for the value provided.
 
 \section{Conclusions and Further Work}
-We have demonstrated that the automatic suggestion of reuseable supplementary information in a general purpose hypertext editor can assist authors to create content. The combination of linguistic parsing, concept extraction, knowledge graph query, and contextual templating were effective techniques to provide such supplementary material. \textbf{TODO:} Confirm based on Anna?s results.
+We have demonstrated that the automatic suggestion of reuseable supplementary information in a general purpose hypertext editor can assist authors to create content. The combination of linguistic parsing, concept extraction, knowledge graph query, and contextual templating were effective techniques to provide such supplementary material. \textbf{TODO:} Confirm based on Anna's results.
 
-Interface testing of content authors showed that? \textbf{TODO:} (e.g. Adding a KG helps users to create supplemental content more rapidly, or adding a KG helps avoid content recreation by linking and reusing existing resources.)
+Interface testing of content authors showed that... \textbf{TODO:} (e.g. Adding a KG helps users to create supplemental content more rapidly, or adding a KG helps avoid content recreation by linking and reusing existing resources.)
 
 Our immediate next step is to productize the server-side portion of our work. We intend to deploy knowledge graph services in several Amazon Web Services availability zones to facilitate rapid network access in geographical regions where our largest customers are located. We will also add the client-side portion into production versions of our JavaScript rich text editors, Textbox.io and TinyMCE.
 
