@@ -37,7 +37,7 @@
 
 \title{Enhancing General Hypertext Editors with Automatic Supplemental Content Suggestions using a Semantic Knowledge Graph
 \titlenote{A full version of this paper is available at
-\texttt{TODO: Ephox/personal URL}}}
+https://w3id.org/people/prototypo/papers/WWW2017a}}
 %
 \numberofauthors{3} % REQUIRED for 3-column layout.
 %
@@ -128,23 +128,28 @@ We wanted to determine whether the textual content in a general purpose hypertex
 
 The techniques necessary for such an exploration are now generally available. Linguistic parsing of text content may be conducted relatively easily using generally available tools, at least in many European languages including English. Concept identification from the results of linguistic parsing has been similarly successful.
 
-Concepts may be matched to relevant additional information by querying a graph of information in the Resource Description Framework (RDF) data model\cite{cyganiak2014rdf}. Such information form ``knowledge graphs" of related information. The first general purpose knowledge graph of scale was Freebase\cite{bollacker2008freebase}, which became the basis for the Google Knowledge Graph\cite{singhalintroducing}. Web search engines such as Google, Bing, and Yandex now use knowledge graphs to provide summaries of relevant information related to search terms. It is exactly this functionality that we wanted to add to our general purpose hypertext editors.
+Concepts may be matched to relevant additional information by querying a graph of information in the Resource Description Framework (RDF) data model\cite{cyganiak2014rdf}. Such information form ``knowledge graphs" of related information.
+
+The first general purpose knowledge graph of scale was Freebase\cite{bollacker2008freebase}, which became the basis for the Google Knowledge Graph\cite{singhalintroducing}. Web search engines such as Google, Bing, and Yandex now use knowledge graphs to provide summaries of relevant information related to search terms. It is exactly this functionality that we wanted to add to our general purpose hypertext editors.
+
+During the writing of this paper, Google announced a feature similar to the one described in this paper for their vertically-integrated Google Docs product\cite{googledocsexplore}. The Google Docs ``Explore'' button opens a sidebar that exposes a search option, and presents concepts, images, and related information. Images may be dragged into a document; other presented content opens Web pages for further reading.
 
 \section{Architecture}
 
 \begin{figure*}
 \centering
-%\includegraphics[height=1in, width=1in]{KGarchitecture}
-\includegraphics[scale=0.6]{KGarchitecture}
+\includegraphics[scale=0.6]{images/KGarchitecture}
 \caption{Data flow from editor to sidebar via enhancement services.}
-%\vskip -6pt
+\label{fig:architecture}
 \end{figure*}
 
 We wrapped one of our JavaScript hypertext editors, Text\allowbreak{}box.io, to include a sidebar for the presentation of supplemental material. The sidebar is a simple HTML component that accepts HTML fragments for display and possible drag-and-drop of components into the editor's content pane. JavaScript is used to query on online service to search for relevant information based upon the current contents of the editor.
 
-Textual content is written into the editor by a document author. That content is uploaded to an Ephox cloud service for analysis (Figure 1). The Ephox service sends the content to another service to parse the content, and extract concepts. We used IBM's online AlchemyLanguage service\footnote{\texttt{http://www.alchemyapi.com/products/alchemylanguage/}} for linguistic parsing and concept identification, although any number of similar services could have been used for those purposes. AlchemyLanguage is based upon IBM's Watson question-answering AI system\cite{ferrucci2010building}. One advantage of the AlchemyLanguage API is that its concept tagging service\footnote{\texttt{http://www.alchemyapi.com/products/alchemylanguage/\allowbreak{}concept-tagging}} returns DBpedia\cite{auer2007dbpedia} URIs for each identified concept.
+Textual content is written into the editor by a document author. That content is uploaded to an Ephox cloud service for analysis (Figure \ref{fig:architecture}). The Ephox service sends the content to another service to parse the content, and extract concepts. We used IBM's online AlchemyLanguage service\footnote{\texttt{http://www.alchemyapi.com/products/alchemylanguage/}} for linguistic parsing and concept identification, although any number of similar services could have been used for those purposes. AlchemyLanguage is based upon IBM's Watson question-answering AI system\cite{ferrucci2010building}.
 
-DBpedia URIs conveniently serve as indexes into an RDF knowledge graph. To implement the knowledge graph service, we used an Apache Tomcat\footnote{\texttt{https://tomcat.apache.org/}} Web application server with a RDF4J\footnote{\texttt{http://rdf4j.org/}} version 2.0 RDF database engine. Relevant portions of DBpedia were sharded into six RDF4J databases to speed both data indexing and assist query performance. DBpedia topical concepts, SKOS\cite{miles2009skos} categories, labels, image URLs, short abstracts, categories and their labels, transitive instance types, mapping-based objects and literals, and person data were used for our initial experiments. We limited our DBpedia extracts to the English language due to the language limitations of the AlchemyLanguage concept tagging service.
+One advantage of the AlchemyLanguage API is that its concept tagging service\footnote{\texttt{http://www.alchemyapi.com/products/alchemylanguage/\allowbreak{}concept-tagging}} returns DBpedia\cite{auer2007dbpedia}, Yago\cite{suchanek2008yago} and Freebase URIs for each identified concept. We used DBpedia URIs as indexes into an RDF knowledge graph.
+
+To implement our knowledge graph service, we used an Apache Tomcat\footnote{\texttt{https://tomcat.apache.org/}} Web application server with a RDF4J\footnote{\texttt{http://rdf4j.org/}} version 2.0 RDF database engine. Relevant portions of DBpedia were sharded into six RDF4J databases to speed both data indexing and assist query performance. DBpedia topical concepts, SKOS\cite{miles2009skos} categories, labels, image URLs, short abstracts, categories and their labels, transitive instance types, mapping-based objects and literals, and person data were used for our initial experiments. We limited our DBpedia extracts to the English language due to the language limitations of the AlchemyLanguage concept tagging service.
 
 Two SPARQL 1.1\cite{harris2013sparql} queries against the knowledge graph were used to construct supplemental material representations:
 
@@ -166,6 +171,23 @@ We chose to construct our own knowledge graph instead of using one provided by t
 \textbf{TODO:} Anna? How did people approach the sidebar? How did they use it? Did anything unexpected happen during use?
 
 \textbf{TODO:} User interface elements are provided to allow an author to refine content suggestions with a minimum of input.
+
+\textbf{TODONEXT:} Interaction modalities:
+
+\begin{figure*}
+\centering
+\includegraphics[scale=0.35]{images/DndOfSidebarContent}
+\caption{One possible interaction mode; drag-and-drop of suggested content. Content may be reformatted to match editor settings.}
+\label{fig:DndOfSidebarContent}
+\end{figure*}
+
+\begin{itemize}
+\item Drag-and-drop of individual images.
+\item Copy-and-paste of textual content.
+\item Drag-and-drop of the entire block of presented information as a blockquote (see Figure \ref{fig:DndOfSidebarContent}).
+\item Use of presented information to facilitate free association.
+\end{itemize}
+
 
 \section{Evaluation}
 
@@ -199,6 +221,7 @@ The authors would like to thank James Johnson for prototyping IBM Watson integra
 % to resolve all references
 %
 % ACM needs 'a single self-contained file'!
+TODO: Include the bibliography here, in case ACM wants the tex file. See the template for directions.
 
 %\balancecolumns % GM June 2007
 % That's all folks!
