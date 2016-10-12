@@ -5,6 +5,10 @@
 \documentclass{sig-alternate-05-2015}
 
 
+% Author defined
+\usepackage{hyperref}
+% End author defined
+
 \begin{document}
 
 % Copyright
@@ -35,9 +39,10 @@
 %\crdata{0-12345-67-8/90/01}  % Allows default copyright data (0-89791-88-6/97/05) to be over-ridden - IF NEED BE.
 % --- End of Author Metadata ---
 
-\title{Automatic Supplemental Content Suggestions in Hypertext Editors using a Semantic Knowledge Graph
+
+\title{A Blueprint for Automatic Supplemental Content Suggestions in Hypertext Editors using a Semantic Knowledge Graph
 \titlenote{A full version of this paper is available at
-https://w3id.org/people/prototypo/papers/WWW2017a}}
+\url{https://w3id.org/people/prototypo/papers/WWW2017a}}}
 %
 \numberofauthors{3} % REQUIRED for 3-column layout.
 %
@@ -145,16 +150,16 @@ During the writing of this paper, Google announced a feature similar to the one 
 
 We wrapped one of our JavaScript hypertext editors, Text\allowbreak{}box.io, to include a sidebar for the presentation of supplemental material. The sidebar is a simple HTML component that accepts HTML fragments for display and possible drag-and-drop of components into the editor's content pane. JavaScript is used to query on online service to search for relevant information based upon the current contents of the editor.
 
-Textual content is written into the editor by a document author. That content is uploaded to an Ephox cloud service for analysis (Figure \ref{fig:architecture}). The Ephox service sends the content to another service to parse the content, and extract concepts. We used IBM's online AlchemyLanguage service\footnote{\texttt{http://www.alchemyapi.com/products/alchemylanguage/}} for linguistic parsing and concept identification, although any number of similar services could have been used for those purposes. AlchemyLanguage is based upon IBM's Watson question-answering AI system\cite{ferrucci2010building}.
+Textual content is written into the editor by a document author. That content is uploaded to an Ephox cloud service for analysis (Figure \ref{fig:architecture}). The Ephox service sends the content to another service to parse the content, and extract concepts. We used IBM's online AlchemyLanguage service\footnote{\url{https://www.alchemyapi.com/products/alchemylanguage/}} for linguistic parsing and concept identification, although any number of similar services could have been used for those purposes. AlchemyLanguage is based upon IBM's Watson question-answering AI system\cite{ferrucci2010building}.
 
-One advantage of the AlchemyLanguage API is that its concept tagging service\footnote{\texttt{http://www.alchemyapi.com/products/alchemylanguage/\allowbreak{}concept-tagging}} returns DBpedia\cite{auer2007dbpedia}, Yago\cite{suchanek2008yago} and Freebase URIs for each identified concept. We used DBpedia URIs as indexes into an RDF knowledge graph.
+One advantage of the AlchemyLanguage API is that its concept tagging service\footnote{\url{https://www.alchemyapi.com/products/alchemylanguage/concept-tagging}} returns DBpedia\cite{auer2007dbpedia}, Yago\cite{suchanek2008yago} and Freebase URIs for each identified concept. We used DBpedia URIs as indexes into an RDF knowledge graph.
 
-To implement our knowledge graph service, we used an Apache Tomcat\footnote{\texttt{https://tomcat.apache.org/}} Web application server with a RDF4J\footnote{\texttt{http://rdf4j.org/}} version 2.0 RDF database engine. Relevant portions of DBpedia were sharded into six RDF4J databases to speed both data indexing and assist query performance. DBpedia topical concepts, SKOS\cite{miles2009skos} categories, labels, image URLs, short abstracts, categories and their labels, transitive instance types, mapping-based objects and literals, and person data were used for our initial experiments. We limited our DBpedia extracts to the English language due to the language limitations of the AlchemyLanguage concept tagging service.
+To implement our knowledge graph service, we used an Apache Tomcat\footnote{\url{https://tomcat.apache.org/}} Web application server with a RDF4J\footnote{\url{http://rdf4j.org/}} version 2.0 RDF database engine. Relevant portions of DBpedia were sharded into six RDF4J databases to speed both data indexing and assist query performance. DBpedia topical concepts, SKOS\cite{miles2009skos} categories, labels, image URLs, short abstracts, categories and their labels, transitive instance types, mapping-based objects and literals, and person data were used for our initial experiments. We limited our DBpedia extracts to the English language due to the language limitations of the AlchemyLanguage concept tagging service.
 
 Two SPARQL 1.1\cite{harris2013sparql} queries against the knowledge graph were used to construct supplemental material representations:
 
 \begin{itemize}
-\item The first SPARQL query is used to identify the type of a concept (i.e. each concept will be either a person, place, organization, movie, species, product, or a general concept).
+\item The first SPARQL query is used to identify the type of a concept (i.e. each concept will be either a person, place, organisation, movie, species, product, or a general concept).
 \item The second SPARQL query is used to identify available data about a specific concept, as anticipated by its type.
 \end{itemize}
 
@@ -201,7 +206,7 @@ Each interaction type is described below.
 
 The first interaction type we implemented was the ability to simply add a link to the knowledge graph concept from the sidebar directly into the document. This functionality was delivered through an \texttt{Insert link} button on each concept widget. Pressing the \texttt{Insert link} button would insert a link at the current cursor position, or, if a selection was made in the editor the link would be applied to the selected text.
 
-\subsection{Panel Insertion}
+\subsection{Panel insertion}
 
 The panel insertion interaction was implemented using two interaction styles. Firstly, like link insertion, a panel could be inserted into the document by clicking the \texttt{Insert panel} button on each concept widget. In addition, a drag-and-drop interaction was implemented on the panel, allowing the concept widget to be dragged directly into the document. In both cases, the resulting concept was displayed as a formatted, in-line blockquote.
 
@@ -218,10 +223,6 @@ Concept filtering was implemented using two different interaction elements. The 
 \caption{Concept filtering interaction sequence.}
 \label{fig:concept-filtering}
 \end{figure}
-
-\textbf{TODO:} Does the following paragraph belong? Should it be rewritten?
-
-A secondary concept filter was implemented on each concept widget. This filter closed individual concept widgets, but did not remove the concept from the set of terms being searched. In the third panel above, closing the ``Long Island" panel removes it from the sidebar, but does not remove ``Long Island" from the list of terms being searched, i.e. other information related to Long Island could still appear in the sidebar.
 
 \subsection{Link viewing}
 
@@ -275,7 +276,8 @@ The videos results were coded against the five-part usage model described in sec
 
 The results were triangulated and discrepancies resolved by reviewing the video footage. Results are shown in Table~\ref{table:results}.
 
-\textbf{TODO:} Add PURL link to summary video.
+\textbf{TODO:} Add PURL link to summary video
+% https://www.dropbox.com/s/en2lko1nd530c16/PreliminaryUserTests-Cognitive.mp4
 
 \subsection{All interactions}
 
@@ -286,11 +288,11 @@ Looking at this cognitive assistant, that is interesting. The internet tells me 
 \end{quote}
 
 \begin{quote}
-...this is a great concept! I love the idea of a search engine running in the background, finding information to strengthen my writing. 
+\ldots this is a great concept! I love the idea of a search engine running in the background, finding information to strengthen my writing. 
 \end{quote}
 
 \begin{quote}
-This readily helps me to create a blog as it makes it very easy and quick to write... and it guides me with information that inspires me to write more, so I don't have writers block. It's very intuitive, and helps me to write a story with an abundance of information for the viewers of my blog.
+This readily helps me to create a blog as it makes it very easy and quick to write\ldots and it guides me with information that inspires me to write more, so I don't have writers block. It's very intuitive, and helps me to write a story with an abundance of information for the viewers of my blog.
 \end{quote}
 
 \begin{quote}
@@ -302,11 +304,11 @@ This readily helps me to create a blog as it makes it very easy and quick to wri
 A few participants commented on the sidebar being a source of inspiration for ideas that they had not thought of themselves.
 
 \begin{quote}
-The New York Giants... actually I don't follow sports so I will use the cognitive enhancer [to get some info on this topic].
+The New York Giants\ldots actually I don't follow sports so I will use the cognitive enhancer [to get some info on this topic].
 \end{quote}
 
 \begin{quote}
-[on opening cognitive assistant] Oh that's cool. It shows me facts about the Statue of Liberty... I like this system, how you can get facts on what you are typing about.
+[on opening cognitive assistant] Oh that's cool. It shows me facts about the Statue of Liberty\ldots I like this system, how you can get facts on what you are typing about.
 \end{quote}
 
 \subsection{Any insert interactions}
@@ -329,20 +331,16 @@ The concept filtering interaction modality was discovered by 85\% of participant
 
 Analysis of the participant interactions shows that the main cause for the drop in intuitiveness and utility related to the inability to perform a custom search and to the relevance of the results, i.e. what was returned from the AI service itself. Almost all participants expressed a desire to augment the concepts presented with a custom search feature:
 
-\textbf{TODO:} Possibly limit the number of these quotes.
-
 \begin{quote}
-When it came to putting the links in, they just did not have what I was looking for... they showed things that were not as [relevant] to me.
-\end{quote} 
-
-\textbf{TODO:} Why is a special character appearing in the output here? Inspect the console for errors.
-
-\begin{quote}
-The results [in the sidebar] are not that relevant... I wish I could control these keywords, like if there was a search bar up here and I could search for New York Giants. I don't see a way to do that. The search results don't really support what I'm writing about.
+When it came to putting the links in, they just did not have what I was looking for\ldots they showed things that were not as [relevant] to me.
 \end{quote}
 
 \begin{quote}
-Is there a way to search this? Because different things pop up here... if I was were planning a trip then I could say Oh Ellis Island, Oh yeah, I forgot about that and then I could go there [on concept filters] I don't understand what these things are for, I keep x-ing these thing out and different ones keep popping up... is it figuring out different things based on what I am writing?... I don't see a place to search for exactly what I want.
+The results [in the sidebar] are not that relevant\ldots I wish I could control these keywords, like if there was a search bar up here and I could search for New York Giants. I don't see a way to do that. The search results don't really support what I'm writing about.
+\end{quote}
+
+\begin{quote}
+Is there a way to search this? Because different things pop up here\ldots if I was were planning a trip then I could say Oh Ellis Island, Oh yeah, I forgot about that and then I could go there [on concept filters] I don't understand what these things are for, I keep x-ing these thing out and different ones keep popping up\ldots is it figuring out different things based on what I am writing?\ldots I don't see a place to search for exactly what I want.
 \end{quote}
 
 \begin{quote}
@@ -357,15 +355,11 @@ The cognitive assistant does have a lot more potential, the only thing is they n
 
 Only 2 of the participants (16\%) viewed, or expressed a desire to view, the original sources that corresponded to each concept widget in the sidebar. This result suggests that information presented in the sidebar innately took on a perceived level of authority that one would associate with an encyclopedic-type reference source -- the links we tested were all pointing to Wikipedia.com, but need not have been as the architecture of the sidebar allows for the integration of any data source. Other links in our products point to (e.g.) IBM Connections resources. More research is warranted, but based on our results, care should be taken to ensure that a sidebar type integration into an editor presents reliable information to the author.
 
-\textbf{TODO:} Add a summary of results.
-
 \subsection{Observations on the on-line testing method}
 
-This research was carried out using traditional quantitative observational style research methods (\textbf{TODO:} Add reference), deployed in an nontraditional way using Validately.com. Although many of the principles of observational research apply to the design and analysis of the user tests, we discovered interesting nuances in the data collection phase.
+This research was carried out using traditional qualtitative observational style research methods\cite{denzin2011sage}, carried out in a nontraditional way using Validately.com. Although many of the principles of observational research apply to the design and analysis of the user tests, we discovered interesting nuances in the data collection phase.
 
-Firstly, although the task was relatively simple, our pre-tests indicated that a general audience was unable to complete the writing task. We adjusted the demographics to filter the sample population to include only those participants who had some university-level education. Even then, only 65\% of participants were able to complete the test in part or in full.
-
-\textbf{TODO:} Should we suggest means of avoiding the writing task? DW thinks so.
+Firstly, although the task was relatively simple, our pre-tests indicated that a general audience was unable to complete the writing task. We adjusted the demographics to filter the sample population to include only those participants who had some university-level education. Even then, only 65\% of participants were able to complete the test in part or in full. Future work will include avoiding the use a writing task in order to focus user behaviour on tasks under testing.
 
 Secondly, although the participants had some university level education, the task itself was perceived as very hard.  35\% of the participants abandoned the test as they were unable to complete the writing component of the task:
 
@@ -379,22 +373,22 @@ At the completion of the user test, participants were asked to rate how useful t
 
 
 \section{Conclusions and Further Work}
-We have demonstrated that the automatic suggestion of reuseable supplementary information in a general purpose hypertext editor can assist authors to create content. The combination of linguistic parsing, concept extraction, knowledge graph query, and contextual templating were effective techniques to provide such supplementary material. \textbf{TODO:} Confirm based on Anna's results.
+We have demonstrated that the automatic suggestion of reusable supplementary information in a general purpose hypertext editor can assist authors to create content. The combination of linguistic parsing, concept extraction, knowledge graph query, and contextual templating were effective techniques to provide such supplementary material.
 
-Interface testing of content authors showed that... \textbf{TODO:} (e.g. Adding a KG helps users to create supplemental content more rapidly, or adding a KG helps avoid content recreation by linking and reusing existing resources.)
+Interface testing of content authors showed that presenting relevant supplementary information helps users to create content. The use of a knowledge graph helps avoid content re-creation by linking and reusing existing resources. However, the ability to make use of, and understand,  the presented material is very sensitive to the interface design. More refinement of the user experience would help users. We intend to extend our user interface to link the presented concepts to related concepts, so that a user will be able to explore relevant content within the editing environment.
 
-Our immediate next step is to productize the server-side portion of our work. We intend to deploy knowledge graph services in several Amazon Web Services availability zones to facilitate rapid network access in geographical regions where our largest customers are located. We will also add the client-side portion into production versions of our JavaScript rich text editors, Textbox.io and TinyMCE.
+Our immediate next step is to productise our work. We intend to deploy knowledge graph services in several Amazon Web Services availability zones to facilitate rapid network access in geographical regions where our largest customers are located. We will also add the client-side portion into production versions of our JavaScript rich text editors, Textbox.io and TinyMCE.
 
 We intend to increase the number of concept types, and their associated templates.
 
-We intend to grow the size and complexity of the Ephox knowledge graph beyond general encyclopaedic content in order to present supplementary material in progressively more contextual ways. We would like to include data that is specific to particular industries, such as manufacturing or pharmaceutical content, and even allow for extension by customers to allow querying of company-specific data. Finally, we intend to extend our user interface to link the presented concepts to related concepts, so that a user will be able to explore relevant content within the editing environment.
+We intend to grow the size and complexity of the Ephox knowledge graph beyond general encyclopaedic content in order to present supplementary material in progressively more contextual ways. We would like to include data that is specific to particular industries, such as manufacturing or pharmaceutical content, and even allow for extension by customers to allow querying of company-specific data.
 
 \textbf{TODO:} Update temporary figures.
 %\end{document}  % This is where a 'short' article might terminate
 
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
-The authors would like to thank James Johnson for prototyping IBM Watson integration into Ephox editors, and Ephox Corporation for supporting this work.
+The authors would like to thank James Johnson for prototyping IBM Watson integration into Ephox editors, George Wilson for his review, and Ephox Corporation for supporting this work.
 
 %
 % The following two commands are all you need in the
