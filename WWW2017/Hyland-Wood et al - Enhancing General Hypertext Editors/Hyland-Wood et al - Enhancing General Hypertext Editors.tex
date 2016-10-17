@@ -72,7 +72,11 @@ Ben Kolera\\
 
 \maketitle
 \begin{abstract}
-Many types of writing, such as blog posts and business documents, could benefit from supplemental explanatory material to provide context, background, and additional information for exploration. The World Wide Web provides huge quantities of such supplementary material, but it is not generally suitable for inclusion in new writing due to issues of licensing, copyright, formatting, or syntax. Exceptions include clearly identifiable content meant to be embedded in hypertext documents, such as YouTube videos, and Twitter feeds. We demonstrate how the textual content in a general purpose hypertext editor may be used to automatically identify relevant supplementary material via artificial intelligence (AI) processes, and that material may be presented to a document author for possible inclusion in whole or in part. User interface elements are provided to allow an author to refine content suggestions with a minimum of input.
+Many types of writing, such as blog posts and business documents, could benefit from supplemental explanatory material to provide context, background, and additional information for exploration. The World Wide Web provides huge quantities of such supplementary material, but they are not generally suitable for inclusion in new writing due to issues of licensing, copyright, formatting, or syntax. Exceptions include clearly identifiable content meant to be embedded in hypertext documents, such as YouTube videos, and Twitter feeds.
+
+In this paper, we present a blueprint for automatically generating supplementary materials for authors who use general purpose hypertext editors. Our approach utilises the textual content of a document as input into existing artificial intelligence processes (linguistic concept/entity extraction coupled with an RDF knowledge graph), and presents the results as a component alongside an editor. The supplementary material is presented to an author for possible inclusion in whole or in part. We present the UI design for this component, and evaluate it using unmoderated observational research methods.
+
+Our findings validate the general concept of enhancing the content creation experience though integrated ``smart" components inside a text editor -- but show that the execution of the user interface is critically important to the perceived utility of such components. We share lessons learned from deploying unmoderated observational studies using an on-line platform and present our intentions for future work.
 \end{abstract}
 
 
@@ -171,14 +175,14 @@ SPARQL 1.1 SERVICE clauses were used to execute federated queries\cite{prud2013s
 
 We chose to construct our own knowledge graph instead of using one provided by the AlchemyLanguage service. We wish to eventually refine and contextualize the contents of the knowledge graph over time to provide industry- or even customer-specific data. We also wanted to be able to swap linguistic parsing and concept tagging services if desired at a later time.
 
-A sidebar was added to our editors. Relevant components are illustrated in in Figure \ref{fig:sidebar-terms}. The show/hide button (2) opens and closes the sidebar panel, shrinking the main editor window content area (1) as it does so. The text typed into the main content area (1) is sent to the server for processing, and the top five concepts returned displayed as keywords (3) in the sidebar area. Individual concepts related to the search terms (3) are displayed as concept widgets (4). Each concept widget has a title and a combination of media and text items. Actions such as view and insert are displayed as buttons at the bottom of each concept widget (6). The concept widgets (4) and media items (5) are able to be drag and dropped into the main content area (1).
+A sidebar was added to our editors. Relevant components are illustrated in Figure \ref{fig:sidebar-terms}. The show/hide button (2) opens and closes the sidebar panel, shrinking the main editor window content area (1) as it does so. The text typed into the main content area (1) is sent to the server for processing, and the top five concepts returned displayed as keywords (3) in the sidebar area. Individual concepts related to the search terms (3) are displayed as concept widgets (4). Each concept widget has a title and a combination of media and text items. Actions such as view and insert are displayed as buttons at the bottom of each concept widget (6). The concept widgets (4) and media items (5) are able to be drag and dropped into the main content area (1).
 
-\begin{figure*}
+\begin{figure}
 \centering
-\includegraphics[scale=0.5]{images/sidebar-terms}
+\includegraphics[scale=0.3]{images/sidebar-terms}
 \caption{Editor and sidebar user interface elements.}
 \label{fig:sidebar-terms}
-\end{figure*}
+\end{figure}
 
 \section{Usage}
 \label{sec:usage}
@@ -234,20 +238,20 @@ The final interaction modality implemented allowed the viewing of the original k
 We ran an unmoderated observational research study in order to test the usage model described in the previous section. Participants were given a writing task and asked to enrich their writing using the Cognitive Assistant. The task description given to users was:
 
 \begin{quote}
-Your Task: Imagine you are writing a blog post to tell your friends about a holiday you recently took (or would like to take) to New York City. Write your story in the editor window below.
+\textit{Your Task: Imagine you are writing a blog post to tell your friends about a holiday you recently took (or would like to take) to New York City. Write your story in the editor window below.}
 
-Using the Cognitive Assistant, enhance your story with:
+\textit{Using the Cognitive Assistant, enhance your story with:}
 
 \begin{enumerate}
-\item Information about the city itself
-\item Information about any attractions, landmarks, shows, movies or restaurants that you visited (or would like to visit).
-\item Information about famous sports teams based in New York City
+\item \textit{Information about the city itself}
+\item \textit{Information about any attractions, landmarks, shows, movies or restaurants that you visited (or would like to visit).}
+\item \textit{Information about famous sports teams based in New York City}
 \end{enumerate}
 
-Please include at least one quote and one video.
+\textit{Please include at least one quote and one video.}
 \end{quote}
 
-The test task intentionally did not prompt the participants on how to achieve the task as we were interested in exploring the natural way in which participants would interact with the sidebar element. Participants were instructed to use a ``talk aloud" protocol while completing the task and their interactions recorded using the online testing service Validately.com.
+The test task intentionally did not prompt the participants on how to achieve the task as we were interested in exploring the natural way in which participants would interact with the sidebar element. Participants were instructed to use a ``talk aloud" protocol while completing the task and their interactions recorded using the online testing service Validately\footnote{\url{https://validately.com}}.
 
 The test was deployed to 20 participants aged over 18 years old and having some university education. Of the 20 participants, 11 were female and 9 were male. Of the 20 deployed tests, 13 were completed either in whole or in part.
 
@@ -274,29 +278,26 @@ The videos results were coded against the five-part usage model described in sec
 \item Perceived the interaction as having value (USEFUL) 
 \end{enumerate}
 
-The results were triangulated and discrepancies resolved by reviewing the video footage. Results are shown in Table~\ref{table:results}.
-
-\textbf{TODO:} Add PURL link to summary video
-% https://www.dropbox.com/s/en2lko1nd530c16/PreliminaryUserTests-Cognitive.mp4
+The results were triangulated and discrepancies resolved by reviewing the video footage\footnote{An 8-minute summary video of the most useful results is available at \url{https://w3id.org/people/prototypo/papers/WWW2017bvideo}}. Results are shown in Table~\ref{table:results}.
 
 \subsection{All interactions}
 
 Most participants intuited what the sidebar represented. Some representative comments included:
 
 \begin{quote}
-Looking at this cognitive assistant, that is interesting. The internet tells me a lot, about what New York is about, and I can insert it right here. It gives me a lot of extra information that I need, and it makes writing very simple because it's integrated.
+\textit{Looking at this cognitive assistant, that is interesting. The internet tells me a lot, about what New York is about, and I can insert it right here. It gives me a lot of extra information that I need, and it makes writing very simple because it's integrated.}
 \end{quote}
 
 \begin{quote}
-\ldots this is a great concept! I love the idea of a search engine running in the background, finding information to strengthen my writing. 
+\textit{\ldots this is a great concept! I love the idea of a search engine running in the background, finding information to strengthen my writing.}
 \end{quote}
 
 \begin{quote}
-This readily helps me to create a blog as it makes it very easy and quick to write\ldots and it guides me with information that inspires me to write more, so I don't have writers block. It's very intuitive, and helps me to write a story with an abundance of information for the viewers of my blog.
+\textit{This readily helps me to create a blog as it makes it very easy and quick to write\ldots and it guides me with information that inspires me to write more, so I don't have writers block. It's very intuitive, and helps me to write a story with an abundance of information for the viewers of my blog.}
 \end{quote}
 
 \begin{quote}
-[opens cognitive assistant] Oh, how interesting! So it looks like, maybe it searched the text [in the document] and used a search engine to look up the information from my text. That's very interesting.
+\textit{[opens cognitive assistant] Oh, how interesting! So it looks like, maybe it searched the text [in the document] and used a search engine to look up the information from my text. That's very interesting.}
 \end{quote}
 
 12 of the 13 participants who completed the task were able to interact with the sidebar to varying degrees of success: the majority of interaction modalities were engaged with (54\%), over a third (39\%) of the interactions appeared intuitive and around a third (32\%) appeared useful.
@@ -304,11 +305,11 @@ This readily helps me to create a blog as it makes it very easy and quick to wri
 A few participants commented on the sidebar being a source of inspiration for ideas that they had not thought of themselves.
 
 \begin{quote}
-The New York Giants\ldots actually I don't follow sports so I will use the cognitive enhancer [to get some info on this topic].
+\textit{The New York Giants\ldots actually I don't follow sports so I will use the cognitive enhancer [to get some info on this topic].}
 \end{quote}
 
 \begin{quote}
-[on opening cognitive assistant] Oh that's cool. It shows me facts about the Statue of Liberty\ldots I like this system, how you can get facts on what you are typing about.
+\textit{[on opening cognitive assistant] Oh that's cool. It shows me facts about the Statue of Liberty\ldots I like this system, how you can get facts on what you are typing about.}
 \end{quote}
 
 \subsection{Any insert interactions}
@@ -320,7 +321,7 @@ Link insertion was the least engaged with mode of interaction: only 3 of the 13 
 For some, while analysis of their interactions revealed that they interacted with the sidebar as expected, their words provided a different narrative:
 
 \begin{quote}
-[uses the cognitive assistant to successfully insert a video and a concept panel] I'm going to say that because it was a prototype, I was unable to use the cognitive assistant
+\textit{[uses the cognitive assistant to successfully insert a video and a concept panel] I'm going to say that because it was a prototype, I was unable to use the cognitive assistant.}
 \end{quote}
 
 The above result is not uncommon in this type of testing, and underscores the benefits of observational research over survey-style methods: i.e. the truth lies in what participants do, not what they say that they do.
@@ -332,23 +333,23 @@ The concept filtering interaction modality was discovered by 85\% of participant
 Analysis of the participant interactions shows that the main cause for the drop in intuitiveness and utility related to the inability to perform a custom search and to the relevance of the results, i.e. what was returned from the AI service itself. Almost all participants expressed a desire to augment the concepts presented with a custom search feature:
 
 \begin{quote}
-When it came to putting the links in, they just did not have what I was looking for\ldots they showed things that were not as [relevant] to me.
+\textit{When it came to putting the links in, they just did not have what I was looking for\ldots they showed things that were not as [relevant] to me.}
 \end{quote}
 
 \begin{quote}
-The results [in the sidebar] are not that relevant\ldots I wish I could control these keywords, like if there was a search bar up here and I could search for New York Giants. I don't see a way to do that. The search results don't really support what I'm writing about.
+\textit{The results [in the sidebar] are not that relevant\ldots I wish I could control these keywords, like if there was a search bar up here and I could search for New York Giants. I don't see a way to do that. The search results don't really support what I'm writing about.}
 \end{quote}
 
 \begin{quote}
-Is there a way to search this? Because different things pop up here\ldots if I was were planning a trip then I could say Oh Ellis Island, Oh yeah, I forgot about that and then I could go there [on concept filters] I don't understand what these things are for, I keep x-ing these thing out and different ones keep popping up\ldots is it figuring out different things based on what I am writing?\ldots I don't see a place to search for exactly what I want.
+\textit{Is there a way to search this? Because different things pop up here\ldots if I was were planning a trip then I could say Oh Ellis Island, Oh yeah, I forgot about that and then I could go there [on concept filters] I don't understand what these things are for, I keep x-ing these thing out and different ones keep popping up\ldots is it figuring out different things based on what I am writing?\ldots I don't see a place to search for exactly what I want.}
 \end{quote}
 
 \begin{quote}
-I like the idea of having the cognitive assistant right in the page where the typing is. It didn't seem to be easy to figure out what the search terms were.
+\textit{I like the idea of having the cognitive assistant right in the page where the typing is. It didn't seem to be easy to figure out what the search terms were.}
 \end{quote}
 
 \begin{quote}
-The cognitive assistant does have a lot more potential, the only thing is they need to work on technical issues as it's hard to manage [the concept widgets] and search and sometimes you want it to find something, but it does not find it.
+\textit{The cognitive assistant does have a lot more potential, the only thing is they need to work on technical issues as it's hard to manage [the concept widgets] and search and sometimes you want it to find something, but it does not find it.}
 \end{quote}
 
 \subsection{Link viewing}
@@ -357,25 +358,28 @@ Only 2 of the participants (16\%) viewed, or expressed a desire to view, the ori
 
 \subsection{Observations on the on-line testing method}
 
-This research was carried out using traditional qualtitative observational style research methods\cite{denzin2011sage}, carried out in a nontraditional way using Validately.com. Although many of the principles of observational research apply to the design and analysis of the user tests, we discovered interesting nuances in the data collection phase.
+This research was carried out using traditional qualtitative observational style research methods\cite{denzin2011sage}, carried out in a nontraditional way using the Validately service. Although many of the principles of observational research apply to the design and analysis of the user tests, we discovered interesting nuances in the data collection phase.
 
 Firstly, although the task was relatively simple, our pre-tests indicated that a general audience was unable to complete the writing task. We adjusted the demographics to filter the sample population to include only those participants who had some university-level education. Even then, only 65\% of participants were able to complete the test in part or in full. Future work will include avoiding the use a writing task in order to focus user behaviour on tasks under testing.
 
 Secondly, although the participants had some university level education, the task itself was perceived as very hard.  35\% of the participants abandoned the test as they were unable to complete the writing component of the task:
 
 \begin{quote}
-I could not complete this task as I have never been to New York and so did not know what to write about.
+\textit{I could not complete this task as I have never been to New York and so did not know what to write about.}
 \end{quote}
 
-At the completion of the user test, participants were asked to rate how useful they found the cognitive assistant on a scale of 0 (not at all useful) to 10 (extremely useful). We observed very little correlation between the rating participants assigned and how they interacted with the tool in the test. For example, the average rating for participants who did not even open the sidebar was 2.4, with two of the respondents rating a 6! This result may reflect an underlying pressure that on-line participants feel to ``do well" on the test as they are being compensated for it. As the field of remote user testing grows, this aspect could warrant its own track of investigation.
-
-\textbf{TODO:} Add a behavioural economics reference re compensated participants wanting to ``do well''? There is probably something in the book Predictably Irrational.
+At the completion of the user test, participants were asked to rate how useful they found the cognitive assistant on a scale of 0 (not at all useful) to 10 (extremely useful). We observed very little correlation between the rating participants assigned and how they interacted with the tool in the test. For example, the average rating for participants who did not even open the sidebar was 2.4, with two of the respondents rating a 6! This result may reflect an underlying pressure that on-line participants feel to ``do well" on the test as they are being compensated for it\cite{ariely2008predictably}, pp. 278-9. As the field of remote user testing grows, this aspect could warrant its own track of investigation.
 
 
-\section{Conclusions and Further Work}
-We have demonstrated that the automatic suggestion of reusable supplementary information in a general purpose hypertext editor can assist authors to create content. The combination of linguistic parsing, concept extraction, knowledge graph query, and contextual templating were effective techniques to provide such supplementary material.
+\section{Conclusions}
 
-Interface testing of content authors showed that presenting relevant supplementary information helps users to create content. The use of a knowledge graph helps avoid content re-creation by linking and reusing existing resources. However, the ability to make use of, and understand,  the presented material is very sensitive to the interface design. More refinement of the user experience would help users. We intend to extend our user interface to link the presented concepts to related concepts, so that a user will be able to explore relevant content within the editing environment.
+This paper presents our experiences in integrating an AI component for the automatic generation of supplementary material inside two widely used hypertext editors. We created an integrated component based on an existing linguistic concept/entity extraction service (IBM Watson) extended with information from a semantic knowledge graph. The component was integrated into TinyMCE and Textbox.io and tested using unmoderated observational research. A blueprint for this concept is described and evaluated using observational research techniques.
+
+Our results showed a high perceived value in the utility of the component, but highlighted that this was directly related to the execution of the user interface elements. In our research, participants found the basic interactions (link insertion, panel insertion and media insertion) intuitive and useful. The concept filtering user interface element, on the other hand, was found to be unintuitive and not useful. Our findings suggest that there is a strong link between the design of the UI elements and the utility perceived by an end user.
+
+The user tests for this research were deployed on-line using Validately.com. We found that this was an efficient platform for the deployment of unmoderated user tests. Our experience also highlighted the intolerance of this testing medium to mistakes or ambiguities in the design of the test task. We observed interesting nuances in the behaviour of participants, and propose further investigation into this as a topic for future work.
+
+\section{Further Work}
 
 Our immediate next step is to productise our work. We intend to deploy knowledge graph services in several Amazon Web Services availability zones to facilitate rapid network access in geographical regions where our largest customers are located. We will also add the client-side portion into production versions of our JavaScript rich text editors, Textbox.io and TinyMCE.
 
@@ -401,7 +405,6 @@ The authors would like to thank James Johnson for prototyping IBM Watson integra
 % to resolve all references
 %
 % ACM needs 'a single self-contained file'!
-\textbf{TODO:} Include the bibliography here, in case ACM wants the tex file. See the template for directions.
 
 %\balancecolumns % GM June 2007
 % That's all folks!
