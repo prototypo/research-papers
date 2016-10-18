@@ -135,6 +135,20 @@ Many types of writing, such as blog posts and business documents, could benefit 
 
 We wanted to determine whether the textual content in a general purpose hypertext editor may be used to automatically identify relevant supplementary material via artificial intelligence (AI) processes, and whether that material may be presented to a document author for possible inclusion in a document in a useful manner.
 
+\begin{figure*}
+\centering
+\includegraphics[scale=0.6]{images/KGarchitecture}
+\caption{Data flow from editor to sidebar via enhancement services.}
+\label{fig:architecture}
+\end{figure*}
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.3]{images/sidebar-terms}
+\caption{Editor and sidebar user interface elements.}
+\label{fig:sidebar-terms}
+\end{figure}
+
 The techniques necessary for such an exploration are now generally available. Linguistic parsing of text content may be conducted relatively easily using generally available tools, at least in many European languages including English. Concept identification from the results of linguistic parsing has been similarly successful.
 
 Concepts may be matched to relevant additional information by querying a graph of information in the Resource Description Framework (RDF) data model\cite{cyganiak2014rdf}. Such information form ``knowledge graphs" of related information.
@@ -145,16 +159,9 @@ During the writing of this paper, Google announced a feature similar to the one 
 
 \section{Architecture}
 
-\begin{figure*}
-\centering
-\includegraphics[scale=0.6]{images/KGarchitecture}
-\caption{Data flow from editor to sidebar via enhancement services.}
-\label{fig:architecture}
-\end{figure*}
+We wrapped one of our JavaScript hypertext editors, Text\allowbreak{}box.io, to include a sidebar for the presentation of supplemental material. The sidebar is an HTML component that accepts HTML fragments for display and possible drag-and-drop of components into the editor's content pane. JavaScript is used to query an online service to search for relevant information based upon the current contents of the editor.
 
-We wrapped one of our JavaScript hypertext editors, Text\allowbreak{}box.io, to include a sidebar for the presentation of supplemental material. The sidebar is a simple HTML component that accepts HTML fragments for display and possible drag-and-drop of components into the editor's content pane. JavaScript is used to query on online service to search for relevant information based upon the current contents of the editor.
-
-Textual content is written into the editor by a document author. That content is uploaded to an Ephox cloud service for analysis (Figure \ref{fig:architecture}). The Ephox service sends the content to another service to parse the content, and extract concepts. We used IBM's online AlchemyLanguage service\footnote{\url{https://www.alchemyapi.com/products/alchemylanguage/}} for linguistic parsing and concept identification, although any number of similar services could have been used for those purposes. AlchemyLanguage is based upon IBM's Watson question-answering AI system\cite{ferrucci2010building}.
+Textual content is written into the editor by a document author. That content is uploaded to an Ephox cloud service for analysis (Figure \ref{fig:architecture}). The Ephox service sends the content to another service parsing, and to extract concepts. We used IBM's online AlchemyLanguage service\footnote{\url{https://www.alchemyapi.com/products/alchemylanguage/}} for linguistic parsing and concept identification, although any number of similar services could have been used for those purposes. AlchemyLanguage is based upon IBM's Watson question-answering AI system\cite{ferrucci2010building}.
 
 One advantage of the AlchemyLanguage API is that its concept tagging service\footnote{\url{https://www.alchemyapi.com/products/alchemylanguage/concept-tagging}} returns DBpedia\cite{auer2007dbpedia}, Yago\cite{suchanek2008yago} and Freebase URIs for each identified concept. We used DBpedia URIs as indexes into an RDF knowledge graph.
 
@@ -169,6 +176,19 @@ Two SPARQL 1.1\cite{harris2013sparql} queries against the knowledge graph were u
 
 Thus, a concept of type ``person" might have a birth date and a birth place. A place might have area and a population estimate, etc. Most data elements for any given type are considered to be optional.
 
+\begin{figure*}
+\centering
+\includegraphics[scale=0.35]{images/DndOfSidebarContent}
+\caption{One possible interaction mode; drag-and-drop of suggested content. Content may be reformatted to match editor settings.}
+\label{fig:DndOfSidebarContent}
+\end{figure*}
+
+\begin{figure}
+\includegraphics[scale=0.25]{images/concept-filtering}
+\caption{Concept filtering interaction sequence.}
+\label{fig:concept-filtering}
+\end{figure}
+
 The results of the second query are used to fill a type-specific HTML template. An HTML fragment is produced for each concept, and any empty divs are removed. The completed fragment is returned to the editor's sidebar for display.
 
 SPARQL 1.1 SERVICE clauses were used to execute federated queries\cite{prud2013sparql} across the various databases making up the knowledge graph.
@@ -177,24 +197,10 @@ We chose to construct our own knowledge graph instead of using one provided by t
 
 A sidebar was added to our editors. Relevant components are illustrated in Figure \ref{fig:sidebar-terms}. The show/hide button (2) opens and closes the sidebar panel, shrinking the main editor window content area (1) as it does so. The text typed into the main content area (1) is sent to the server for processing, and the top five concepts returned displayed as keywords (3) in the sidebar area. Individual concepts related to the search terms (3) are displayed as concept widgets (4). Each concept widget has a title and a combination of media and text items. Actions such as view and insert are displayed as buttons at the bottom of each concept widget (6). The concept widgets (4) and media items (5) are able to be drag and dropped into the main content area (1).
 
-\begin{figure}
-\centering
-\includegraphics[scale=0.3]{images/sidebar-terms}
-\caption{Editor and sidebar user interface elements.}
-\label{fig:sidebar-terms}
-\end{figure}
-
 \section{Usage}
 \label{sec:usage}
 
-\begin{figure*}
-\centering
-\includegraphics[scale=0.35]{images/DndOfSidebarContent}
-\caption{One possible interaction mode; drag-and-drop of suggested content. Content may be reformatted to match editor settings.}
-\label{fig:DndOfSidebarContent}
-\end{figure*}
-
-We developed several interaction modalities to facilitate the adding of supplemental material to textual content in the editor. Specifically, we implemented five different types of interactions:
+We developed five interaction modalities to facilitate the adding of supplemental material to textual content in the editor:
 
 \begin{enumerate}
 \item \textit{Link insertion}. Inserts a link to the knowledge graph concept.
@@ -212,7 +218,7 @@ The first interaction type we implemented was the ability to simply add a link t
 
 \subsection{Panel insertion}
 
-The panel insertion interaction was implemented using two interaction styles. Firstly, like link insertion, a panel could be inserted into the document by clicking the \texttt{Insert panel} button on each concept widget. In addition, a drag-and-drop interaction was implemented on the panel, allowing the concept widget to be dragged directly into the document. In both cases, the resulting concept was displayed as a formatted, in-line blockquote.
+The panel insertion interaction was implemented using two interaction styles. Firstly, like link insertion, a panel could be inserted into the document by clicking the \texttt{Insert panel} button on each concept widget. In addition, a drag-and-drop interaction was implemented on the panel, allowing the concept widget to be dragged directly into the document. In both cases, the resulting concept was displayed as a formatted, in-line blockquote. The insert panel interaction sequence is shown in Figure~\ref{fig:DndOfSidebarContent}.
 
 \subsection{Media insertion}
 
@@ -220,13 +226,7 @@ The media insertion interaction was provided as a drag-and-drop interaction only
 
 \subsection{Concept filtering}
 
-Concept filtering was implemented using two different interaction elements. The first element listed the top five concepts identified by the AI service as keywords at the top of the sidebar area. Each concept could be removed from consideration by deselecting its visual tag. Removal of a concept from the user interface removes it from the knowledge graph search. In the example below, closing ``The Bronx" concept keyword results in that term being removed from the search, and all concept widgets related to that term being removed from the sidebar.
-
-\begin{figure}
-\includegraphics[scale=0.25]{images/concept-filtering}
-\caption{Concept filtering interaction sequence.}
-\label{fig:concept-filtering}
-\end{figure}
+Identified concepts were shown in a widget near the top of the sidebar (the ``search terms'' shown in Figure~\ref{fig:DndOfSidebarContent}). The top five concepts identified by the AI service were listed as keywords within that widget. Each concept could be removed from consideration by deselecting its visual tag. Removal of a concept from the user interface removes it from the knowledge graph search. In the example shown in Figure~\ref{fig:concept-filtering}, closing the ``John Oxley" concept keyword results in that term being removed from the search, and all concept widgets related to that term being removed from the sidebar. The next most highly weighted concept is added to the widget if one is available.
 
 \subsection{Link viewing}
 
@@ -253,7 +253,7 @@ We ran an unmoderated observational research study in order to test the usage mo
 
 The test task intentionally did not prompt the participants on how to achieve the task as we were interested in exploring the natural way in which participants would interact with the sidebar element. Participants were instructed to use a ``talk aloud" protocol while completing the task and their interactions recorded using the online testing service Validately\footnote{\url{https://validately.com}}.
 
-The test was deployed to 20 participants aged over 18 years old and having some university education. Of the 20 participants, 11 were female and 9 were male. Of the 20 deployed tests, 13 were completed either in whole or in part.
+The test was deployed to 20 participants aged over 18 years old and having some university education. Of the 20 participants, 11 were female and 9 were male. Thirteen tests were completed either in whole or in part.
 
 \section{Results}
 
@@ -354,13 +354,13 @@ Analysis of the participant interactions shows that the main cause for the drop 
 
 \subsection{Link viewing}
 
-Only 2 of the participants (16\%) viewed, or expressed a desire to view, the original sources that corresponded to each concept widget in the sidebar. This result suggests that information presented in the sidebar innately took on a perceived level of authority that one would associate with an encyclopedic-type reference source -- the links we tested were all pointing to Wikipedia.com, but need not have been as the architecture of the sidebar allows for the integration of any data source. Other links in our products point to (e.g.) IBM Connections resources. More research is warranted, but based on our results, care should be taken to ensure that a sidebar type integration into an editor presents reliable information to the author.
+Only 2 of the participants (16\%) viewed, or expressed a desire to view, the original sources that corresponded to each concept widget in the sidebar. This result suggests that information presented in the sidebar innately took on a perceived level of authority that one would associate with an encyclopaedic-type reference source -- the links we tested were all pointing to Wikipedia.com, but need not have been as the architecture of the sidebar allows for the integration of any data source. Other links in our products point to content from additional reachable sources (e.g. content available within an IBM Connections deployment). More research is warranted, but based on our results, care should be taken to ensure that a sidebar type integration into an editor presents reliable information to the author.
 
 \subsection{Observations on the on-line testing method}
 
-This research was carried out using traditional qualtitative observational style research methods\cite{denzin2011sage}, carried out in a nontraditional way using the Validately service. Although many of the principles of observational research apply to the design and analysis of the user tests, we discovered interesting nuances in the data collection phase.
+This research used traditional qualititative observational style research methods\cite{denzin2011sage}, carried out in a nontraditional way using the Validately service. Although many of the principles of observational research apply to the design and analysis of the user tests, we discovered interesting nuances in the data collection phase.
 
-Firstly, although the task was relatively simple, our pre-tests indicated that a general audience was unable to complete the writing task. We adjusted the demographics to filter the sample population to include only those participants who had some university-level education. Even then, only 65\% of participants were able to complete the test in part or in full. Future work will include avoiding the use a writing task in order to focus user behaviour on tasks under testing.
+Firstly, although the task was relatively simple, our pre-tests indicated that a general audience was unable to complete the writing task. We adjusted the demographics to filter the sample population to include only those participants who had some university-level education. Even then, only 65\% of participants were able to complete the test in part or in full.
 
 Secondly, although the participants had some university level education, the task itself was perceived as very hard.  35\% of the participants abandoned the test as they were unable to complete the writing component of the task:
 
@@ -377,15 +377,17 @@ This paper presents our experiences in integrating an AI component for the autom
 
 Our results showed a high perceived value in the utility of the component, but highlighted that this was directly related to the execution of the user interface elements. In our research, participants found the basic interactions (link insertion, panel insertion and media insertion) intuitive and useful. The concept filtering user interface element, on the other hand, was found to be unintuitive and not useful. Our findings suggest that there is a strong link between the design of the UI elements and the utility perceived by an end user.
 
-The user tests for this research were deployed on-line using Validately.com. We found that this was an efficient platform for the deployment of unmoderated user tests. Our experience also highlighted the intolerance of this testing medium to mistakes or ambiguities in the design of the test task. We observed interesting nuances in the behaviour of participants, and propose further investigation into this as a topic for future work.
+The user tests for this research were deployed on-line using Validately. We found that this was an efficient platform for the deployment of unmoderated user tests. Our experience also highlighted the intolerance of this testing medium to mistakes or ambiguities in the design of the test task. We observed interesting nuances in the behaviour of participants, and propose further investigation into this as a topic for future work.
 
 \section{Further Work}
 
 Our immediate next step is to productise our work. We intend to deploy knowledge graph services in several Amazon Web Services availability zones to facilitate rapid network access in geographical regions where our largest customers are located. We will also add the client-side portion into production versions of our JavaScript rich text editors, Textbox.io and TinyMCE.
 
-We intend to increase the number of concept types, and their associated templates.
+We intend to increase the number of concept types and their associated templates. We may add support for additional media types.
 
-We intend to grow the size and complexity of the Ephox knowledge graph beyond general encyclopaedic content in order to present supplementary material in progressively more contextual ways. We would like to include data that is specific to particular industries, such as manufacturing or pharmaceutical content, and even allow for extension by customers to allow querying of company-specific data.
+Future qualitative studies of editor environments may avoid the use of a writing task in order to focus user behaviour on tasks specifically under testing.
+
+We expect to grow the size and complexity of the Ephox knowledge graph beyond general encyclopaedic content in order to present supplementary material in progressively more contextual ways. We would like to include data that is specific to particular industries, such as manufacturing or pharmaceutical content, and even allow for extension by customers to allow querying of company-specific data.
 
 %\end{document}  % This is where a 'short' article might terminate
 
